@@ -26,29 +26,33 @@ class Board
         @board = build_board
     end
 
+    def [](pos)
+        row, col = pos
+        @board[row][col]
+    end
+
+    def []=(pos, val)
+        row, col = pos
+        @board[row][col] = val
+    end
+
     def build_board
         board = [
-            build_special_row("white"),
-            build_pawn_row("white"),
+            build_piece_row(:white, 0),
+            build_piece_row(:white, 1),
             build_nil_row,
             build_nil_row,
             build_nil_row,
             build_nil_row,
-            build_pawn_row("black"),
-            build_special_row("black")
+            build_piece_row(:black, 6),
+            build_piece_row(:black, 7)
         ] 
     end
 
-    def build_pawn_row(colour)
-        row = []
-        (1..8).each {|time| row << Piece.new("Pawn",colour)}
-        row
-    end
-
-    def build_special_row(colour)
-        row = []
-        (1..8).each {|time| row << Piece.new("Special",colour)}
-        row
+    def build_piece_row(colour,row)
+        board_row = []
+        (0..7).each {|time| board_row << Piece.new(colour, self, [row, time])}
+        board_row
     end
 
     def build_nil_row
@@ -70,29 +74,27 @@ class Board
         pos
     end
 
-    def move_piece
+    def move_piece(start_pos, end_pos)
         #get piece logic
         begin
-            coords = input_pos("Select a piece with input like `1,2`")
-            piece = get_piece(coords)
+            #coords = input_pos("Select a piece with input like `1,2`")
+            piece = get_piece(start_pos)
         rescue NoPieceError => e
             puts e.message
-            retry
         end
+        
         #place piece logic
         begin
-            coords = input_pos("Where's it going?")
-            place_piece(coords, piece)
+            place_piece(end_pos, piece)
         rescue
-            retry
+            
         end
     end
 
     def get_piece(pos)
-        row, col = pos
-        piece = @board[row][col]
+        piece = self[pos]
         if piece.is_a?(Piece)
-            @board[row][col] = "nil"
+            self[pos] = "nil"
             return piece
         else
             raise NoPieceError
@@ -100,18 +102,14 @@ class Board
     end
 
     def place_piece(pos, place_piece)
-        row, col = pos
-        pos_value = @board[row][col]
-        # if pos_value.is_a?(Piece)
-        #     return piece
-        # else
-        #     raise NoPieceError
-        # end
-        @board[row][col] = place_piece
+        pos_value = self[pos]
+        self[pos] = place_piece
+        place_piece.pos = pos
     end
 
 end
 
 b = Board.new
-b.move_piece
+b.move_piece([0,0],[0,3])
+p b[[0,3]].pos
 
