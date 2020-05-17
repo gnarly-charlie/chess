@@ -1,5 +1,5 @@
 require "byebug"
-require_relative "Piece"
+require_relative "Pieces"
 
 class NoPieceError < StandardError
     def message
@@ -36,17 +36,22 @@ class Board
         @board[row][col] = val
     end
 
+    def valid_pos?(pos)
+        return false unless pos.all? {|coord| (0..7).include?(coord)}
+        true
+    end
+
     def build_board
         board = [
             build_piece_row(:white, 0),
             build_piece_row(:white, 1),
-            build_nil_row,
-            build_nil_row,
-            build_nil_row,
-            build_nil_row,
+            build_nil_row(2),
+            build_nil_row(3),
+            build_nil_row(4),
+            build_nil_row(5),
             build_piece_row(:black, 6),
             build_piece_row(:black, 7)
-        ] 
+        ]
     end
 
     def build_piece_row(colour,row)
@@ -55,10 +60,10 @@ class Board
         board_row
     end
 
-    def build_nil_row
-        row = []
-        (1..8).each {|time| row << "nil"}
-        row
+    def build_nil_row(row)
+        board_row = []
+        (0..7).each {|time| board_row << NullPiece.new(:null, self, [row, time])}
+        board_row
     end
 
     def input_pos(message)
@@ -94,7 +99,7 @@ class Board
     def get_piece(pos)
         piece = self[pos]
         if piece.is_a?(Piece)
-            self[pos] = "nil"
+            self[pos] = NullPiece.new(:null, self, pos)
             return piece
         else
             raise NoPieceError
@@ -110,6 +115,10 @@ class Board
 end
 
 b = Board.new
-b.move_piece([0,0],[0,3])
-p b[[0,3]].pos
+b[[3,0]] = King.new(:white, b, [3,0])
+p b[[3,0]].moves
+b[[3,0]] = Knight.new(:white, b, [3,0])
+p b[[3,0]].moves
+
+
 

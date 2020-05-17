@@ -1,7 +1,7 @@
 
 
-
 class Piece
+    attr_reader :board, :colour
     attr_accessor :pos
 
     def initialize (colour, board, pos)
@@ -16,6 +16,8 @@ class Piece
         #{ 'type' => @type, 'colour' => @colour }.inspect
     end
 
+    def valid_moves
 
+    end
 
 end
