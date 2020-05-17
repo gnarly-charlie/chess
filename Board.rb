@@ -115,8 +115,9 @@ class Board
 end
 
 b = Board.new
-b[[3,0]] = King.new(:white, b, [3,0])
-p b[[3,0]].moves
+b[[2,0]] = Rook.new(:white, b, [2,0])
+p b[[2,0]].moves
+
 b[[3,0]] = Knight.new(:white, b, [3,0])
 p b[[3,0]].moves
 

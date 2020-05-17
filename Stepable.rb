@@ -6,7 +6,7 @@ module Stepable
             new_pos = [curr_row + row_offset, curr_col + col_offset]
             next unless board.valid_pos?(new_pos)
             new_pos_contents = board[new_pos]
-            new_coords << new_pos if new_pos_contents.colour != self.colour
+            new_coords << [new_pos[0], new_pos[1]] if new_pos_contents.colour != self.colour
         end
     end
 
