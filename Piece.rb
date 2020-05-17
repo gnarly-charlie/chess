@@ -12,8 +12,11 @@ class Piece
     end
 
     def inspect
-        @type.inspect
+        self.symbol.inspect
         #{ 'type' => @type, 'colour' => @colour }.inspect
+    end
+
+    def symbol
     end
 
     def valid_moves

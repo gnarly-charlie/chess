@@ -44,19 +44,37 @@ class Board
     def build_board
         board = [
             build_piece_row(:white, 0),
-            build_piece_row(:white, 1),
+            build_pawn_row(:white, 1),
             build_nil_row(2),
             build_nil_row(3),
             build_nil_row(4),
             build_nil_row(5),
-            build_piece_row(:black, 6),
+            build_pawn_row(:black, 6),
             build_piece_row(:black, 7)
         ]
     end
 
-    def build_piece_row(colour,row)
+    def build_piece_row(colour, row)
         board_row = []
-        (0..7).each {|time| board_row << Piece.new(colour, self, [row, time])}
+        board_row << Rook.new(colour, self, [row, 0])
+        board_row << Knight.new(colour, self, [row, 1])
+        board_row << Bishop.new(colour, self, [row, 2])
+        if colour == :white
+            board_row << Queen.new(colour, self, [row, 3])
+            board_row << King.new(colour, self, [row, 4])
+        else
+            board_row << King.new(colour, self, [row, 3])
+            board_row << Queen.new(colour, self, [row, 4])
+        end
+        board_row << Bishop.new(colour, self, [row, 5])
+        board_row << Knight.new(colour, self, [row, 6])
+        board_row << Rook.new(colour, self, [row, 7])
+        board_row
+    end
+
+    def build_pawn_row(colour, row)
+        board_row = []
+        (0..7).each {|time| board_row << Pawn.new(colour, self, [row, time])}
         board_row
     end
 
@@ -115,11 +133,9 @@ class Board
 end
 
 b = Board.new
-b[[2,0]] = Rook.new(:white, b, [2,0])
-p b[[2,0]].moves
-
-b[[3,0]] = Knight.new(:white, b, [3,0])
-p b[[3,0]].moves
+b[[2,0]] = Pawn.new(:black, self, [2,0])
+p b
 
 
-
+p b[[1,0]].moves
+p b[[6,0]].moves
