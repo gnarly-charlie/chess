@@ -1,5 +1,7 @@
 require "io/console"
 
+#full disclosure i only implemented the handle_key and update_pos methods
+
 KEYMAP = {
   " " => :space,
   "h" => :left,

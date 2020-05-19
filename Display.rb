@@ -17,6 +17,15 @@ class Display
         (0..7).each {|time| puts row_render(time)}
     end
 
+    def test
+        until false
+            render
+            cursor.get_input
+        end
+    end
+
+    private
+
     def row_render(row)
         row_string = "#{row}  "
         board.board[row].each.with_index do |piece, col|
@@ -33,13 +42,6 @@ class Display
             :red
         else
             :blue
-        end
-    end
-
-    def test
-        until false
-            render
-            cursor.get_input
         end
     end
 

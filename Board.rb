@@ -131,15 +131,48 @@ class Board
     end
 
     def in_check?(colour)
-        
+        king_pos = find_king(colour)
+        board.each do |row|
+            row.each do |piece|
+                if piece.colour != colour && is_nullpiece?(piece) != true
+                    return true if piece.moves.include?(king_pos)
+                end
+            end
+        end
+        false
+    end
+
+    def checkmate?(colour)
+        if in_check?(colour)
+            board.each do |row|
+                row.each do |piece|
+                    next if is_nullpiece?(piece)
+                    return false if piece.colour == colour && piece.valid_moves.length > 0
+                end
+            end
+            return true
+        end
+        false
+    end
+
+    def is_nullpiece?(piece)
+        return true if piece.is_a?(NullPiece)
+        false
+    end
+
+    def find_king(colour)
+        board.each do |row|
+            row.each do |piece|
+                return piece.pos if piece.colour == colour && piece.is_a?(King)
+            end
+        end
+        nil
     end
 
 end
 
-# b = Board.new
-# b[[2,0]] = Pawn.new(:black, self, [2,0])
-# p b
+b = Board.new
+p b.in_check?(:white)
+b.place_piece([0, 3], Rook.new(:black, b, [0,3]))
+p b.in_check?(:white)
 
-
-# p b[[1,0]].moves
-# p b[[6,0]].moves

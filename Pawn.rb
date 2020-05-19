@@ -1,4 +1,5 @@
 require_relative "Piece"
+require "byebug"
 
 class Pawn < Piece
 
@@ -46,10 +47,10 @@ class Pawn < Piece
         right_attack_pos = [pos[0] + self.forward_dir, pos[1] + 1]
         left_attack_contents = board[left_attack_pos]
         right_attack_contents = board[right_attack_pos]
-        if left_attack_contents.is_a?(NullPiece) != true
+        if left_attack_contents.is_a?(NullPiece) != true && board.valid_pos?(left_attack_pos)
             attack_pos << left_attack_pos if left_attack_contents.colour != self.colour
         end
-        if right_attack_contents.is_a?(NullPiece) != true
+        if right_attack_contents.is_a?(NullPiece) != true && board.valid_pos?(right_attack_pos)
             attack_pos << right_attack_pos if right_attack_contents.colour != self.colour
         end
         attack_pos

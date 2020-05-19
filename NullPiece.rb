@@ -5,4 +5,7 @@ class NullPiece < Piece
         "_"
     end
 
+    def moves
+        
+    end
 end

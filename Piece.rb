@@ -23,4 +23,9 @@ class Piece
 
     end
 
+    def is_nullpiece?(piece)
+        return true if piece.is_a?(NullPiece)
+        false
+    end
+
 end
