@@ -130,12 +130,16 @@ class Board
         place_piece.pos = pos
     end
 
+    def in_check?(colour)
+        
+    end
+
 end
 
-b = Board.new
-b[[2,0]] = Pawn.new(:black, self, [2,0])
-p b
+# b = Board.new
+# b[[2,0]] = Pawn.new(:black, self, [2,0])
+# p b
 
 
-p b[[1,0]].moves
-p b[[6,0]].moves
+# p b[[1,0]].moves
+# p b[[6,0]].moves
