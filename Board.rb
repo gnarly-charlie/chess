@@ -98,17 +98,32 @@ class Board
     end
 
     def move_piece(start_pos, end_pos)
+        #check if valid move and raise if not
+        p_valid_moves = self[start_pos].valid_moves
+        raise InvalidMoveError unless p_valid_moves.include?(end_pos)
         #get piece logic
+        begin
+            piece = get_piece(start_pos)
+        rescue NoPieceError => e
+            puts e.message
+        end
+        #place piece logic
+        begin
+            place_piece(end_pos, piece)
+        rescue InvalidMoveError => e
+            puts e.message
+        end
+    end
+
+    def move_piece!(start_pos, end_pos)
         begin
             #coords = input_pos("Select a piece with input like `1,2`")
             piece = get_piece(start_pos)
         rescue NoPieceError => e
             puts e.message
         end
-        
-        #place piece logic
         begin
-            place_piece(end_pos, piece)
+            place_piece!(end_pos, piece)
         rescue
             
         end
@@ -125,6 +140,12 @@ class Board
     end
 
     def place_piece(pos, place_piece)
+        pos_value = self[pos]
+        self[pos] = place_piece
+        place_piece.pos = pos
+    end
+
+    def place_piece!(pos, place_piece)
         pos_value = self[pos]
         self[pos] = place_piece
         place_piece.pos = pos
@@ -172,7 +193,13 @@ class Board
 end
 
 b = Board.new
-p b.in_check?(:white)
-b.place_piece([0, 3], Rook.new(:black, b, [0,3]))
-p b.in_check?(:white)
+# p b.in_check?(:white)
+# b.place_piece([0, 3], Rook.new(:black, b, [0,3]))
+# p b.in_check?(:white)
+# b[[0,0]].move_into_check?([0,0])
+# p b[[1,0]].valid_moves
+b.move_piece!([0,0], [7,4])
+b.move_piece([7,4], [7,5])
+p b
+p b.checkmate?(:black)
 
