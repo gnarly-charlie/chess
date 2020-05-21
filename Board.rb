@@ -19,6 +19,12 @@ class InvalidPosError < StandardError
     end
 end
 
+class NoValidMovesError < StandardError
+    def message
+        "Selected piece has no valid moves"
+    end
+end
+
 class Board
     attr_reader :board
 
@@ -173,7 +179,19 @@ class Board
             end
             return true
         end
+        king_moves = board[find_king(colour)].valid_moves
+        return true if num_pieces(colour) == 1 && king_moves.length == 0
         false
+    end
+
+    def num_pieces(colour)
+        total = 0
+        board.each do |row|
+            row.each do |piece|
+                total += 1 if piece.colour == colour
+            end
+        end
+        total
     end
 
     def is_nullpiece?(piece)
@@ -192,14 +210,14 @@ class Board
 
 end
 
-b = Board.new
-# p b.in_check?(:white)
-# b.place_piece([0, 3], Rook.new(:black, b, [0,3]))
-# p b.in_check?(:white)
-# b[[0,0]].move_into_check?([0,0])
-# p b[[1,0]].valid_moves
-b.move_piece!([0,0], [7,4])
-b.move_piece([7,4], [7,5])
-p b
-p b.checkmate?(:black)
+# b = Board.new
+# # p b.in_check?(:white)
+# # b.place_piece([0, 3], Rook.new(:black, b, [0,3]))
+# # p b.in_check?(:white)
+# # b[[0,0]].move_into_check?([0,0])
+# # p b[[1,0]].valid_moves
+# b.move_piece!([0,0], [7,4])
+# b.move_piece([7,4], [7,5])
+# p b
+# p b.checkmate?(:black)
 

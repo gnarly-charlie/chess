@@ -3,18 +3,19 @@ require_relative "Board"
 require_relative "Cursor"
 
 class Display
-    attr_accessor :board, :cursor
+    attr_accessor :board, :cursor, :notifications
 
-    def initialize
-        @board = Board.new
+    def initialize(board)
+        @board = board
         @cursor = Cursor.new([0,0], board)
-        render
+        @notifications = ""
     end
 
     def render
         system("clear")
         puts "   0  1  2  3  4  5  6  7"
         (0..7).each {|time| puts row_render(time)}
+        puts notifications
     end
 
     def test
@@ -46,6 +47,3 @@ class Display
     end
 
 end
-
-d = Display.new
-d.test

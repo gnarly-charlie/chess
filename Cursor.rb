@@ -47,6 +47,10 @@ class Cursor
     handle_key(key)
   end
 
+  def toggle_selected
+    @selected = !@selected
+  end
+
   private
 
   def read_char
@@ -84,7 +88,7 @@ class Cursor
         update_pos(MOVES[key])
         nil
       when :return, :space
-        @selected = !@selected
+        toggle_selected
         cursor_pos
       when :ctrl_c
         Process.exit(0)
